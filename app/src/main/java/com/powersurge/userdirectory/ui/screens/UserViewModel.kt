@@ -4,6 +4,9 @@ import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.setValue
 import androidx.lifecycle.ViewModel
+import androidx.lifecycle.viewModelScope
+import com.powersurge.userdirectory.network.UserApi
+import kotlinx.coroutines.launch
 
 class UserViewModel : ViewModel()  {
     var userUiState: String by mutableStateOf("")
@@ -14,6 +17,9 @@ class UserViewModel : ViewModel()  {
     }
 
     fun getUser() {
-        userUiState = "User API status response here!"
+        viewModelScope.launch {
+            val listResult = UserApi.retrofitService.getUsers()
+            userUiState = listResult
+        }
     }
 }
